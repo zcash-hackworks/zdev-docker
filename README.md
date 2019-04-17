@@ -59,7 +59,8 @@ accessible in the container at `/mount`. The changes you make to files inside
 containers are ephemeral, so any changes you make to the container outside of
 `/mount` will be lost.**
 
-You can run build commands inside the container, for example:
+The previous command opened a shell inside the container. You can run build
+commands, for example:
 
 ```
 cd /mount/zcash
@@ -70,17 +71,15 @@ cd /mount/zcash
 
 See the individual projects' documentation for build instructions.
 
-## Docker Tips
+To open another shell into the running container, run `docker container ls`,
+copy the container ID, and then run `docker exec -it <container ID> bash`.
 
 To update the Ubuntu packages in the `zdev` image or make changes to which
 dependencies are installed, edit the `docker/install-build-dependencies.sh`
 script and then re-build the `zdev` image using the same command as above. The
 changes will take effect in the next container instance you launch.
 
-To open another shell into a running container, run `docker container ls`, copy
-the container ID, and then run `docker exec -it <container ID> bash`.
-
-## Build Instructions
+## Build Cheat Sheet
 
 THESE ARE UNOFFICIAL INSTRUCTIONS. SEE THE INDIVIDUAL PROJECTS' DOCUMENTATION
 FOR POSSIBLY-MORE-ACCURATE INSTRUCTIONS.
