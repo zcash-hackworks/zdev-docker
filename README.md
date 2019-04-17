@@ -1,6 +1,7 @@
 # Zcash Docker Development Environment
 
-**This is a work-in-progress and may not function reliably.**
+🛑**This is a work-in-progress and may not function reliably. It is certainly not
+intended to be used in production.**🛑
 
 This repository contains a Dockerfile that will help you get started building
 Zcash's mobile app wallet stack. The projects' code is kept on your host
