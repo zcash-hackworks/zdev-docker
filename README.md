@@ -20,6 +20,8 @@ It does not yet support:
 
 ## Quick Start
 
+**Requirements:** Docker, 30GB free disk space.
+
 First, checkout this repository:
 
 ```
