@@ -81,9 +81,6 @@ changes will take effect in the next container instance you launch.
 
 ## Build Cheat Sheet
 
-THESE ARE UNOFFICIAL INSTRUCTIONS. SEE THE INDIVIDUAL PROJECTS' DOCUMENTATION
-FOR POSSIBLY-MORE-ACCURATE INSTRUCTIONS.
-
 **Note:** All of the builds are independent for now, i.e. the build output of
 `librustzcash` *doesn't* get used as an input to the `zcash-android-wallet-sdk`
 build.
