@@ -13,6 +13,7 @@ pip install pyblake2
 
 # Dependencies for lightwalletd
 # =================================================
+apt-get install -y libzmq3-dev
 
 # Golang
 wget https://dl.google.com/go/go1.12.4.linux-amd64.tar.gz -O go.tar.gz
