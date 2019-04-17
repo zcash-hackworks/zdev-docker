@@ -57,9 +57,7 @@ docker run -it --mount type=bind,source="$(pwd)"/mount,target=/mount zdev
 
 The `./mount` directory will be shared between the host and the container,
 accessible in the container at `/mount`. The changes you make to files inside
-`/mount` in the container will change the files in `./mount`. **Docker
-containers are ephemeral, so any changes you make to the container outside of
-`/mount` will be lost.**
+`/mount` in the container will change the files in `./mount`.
 
 The previous command opened a shell inside the container. You can run build
 commands, for example:
