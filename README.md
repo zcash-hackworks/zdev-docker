@@ -72,12 +72,15 @@ cd /mount/zcash
 See the individual projects' documentation for build instructions.
 
 To open another shell into the running container, run `docker container ls`,
-copy the container ID, and then run `docker exec -it <container ID> bash`.
+copy the container ID, and then run `docker exec -it <container ID> bash`. You
+can start and stop the container with `docker start` and `docker stop`.
 
 To update the Ubuntu packages in the `zdev` image or make changes to which
 dependencies are installed, edit the `docker/install-build-dependencies.sh`
 script and then re-build the `zdev` image using the same command as above. The
-changes will take effect in the next container instance you launch.
+changes will take effect in the next *new* container instance you launch. You
+can of course also just make changes directly to the container instead of
+updating the image every time.
 
 ## Build Cheat Sheet
 
@@ -116,12 +119,60 @@ cd /mount/zcash-android-wallet-sdk
 
 ## Running the Stack
 
-TODO
+This section will help you set up:
+
+1. A `zcashd` node connected to testnet.
+2. A `lightwalletd` injestor which receives blocks from the `zcashd` node.
+3. A `lightwalletd` server which serves the blocks parsed by the injestor to
+   light clients.
+
+First, start the `lightwalletd` injestor:
+
+```
+cd /mount/lightwalletd
+go run cmd/ingest/main.go -db-path database.db -log-file injestor-log.txt
+```
+
+This will listen on port 28332 for a ZMQ connection from `zcashd`. Now put the
+following contents in `/root/.zcash/zcash.conf`:
+
+```
+testnet=1
+addnode=testnet.z.cash
+zmqpubcheckedblock=tcp://127.0.0.1:28332
+rpcuser=yourusername
+rpcpassword=yourpassword
+```
+
+You're advised to change `yourusername` and `yourpassword` to something random.
+This configures `zcashd` to sync with the testnet and send blocks to
+`lightwalletd` on localhost port 28332. Now build and run `zcashd`:
+
+```
+cd /mount/zcash
+./zcutil/build.sh -j$(nproc)
+./zcutil/fetch-params.sh
+./src/zcashd
+```
+
+If you check the contents of `/mount/lighwalletd/injestor-log.txt`, you should
+see that it is receiving blocks as the `zcashd` node syncs.
+
+To serve these blocks to light clients, start the server:
+
+```
+cd /mount/lightwalletd
+go run cmd/server/main.go -conf-file /root/.zcash/zcash.conf -db-path database.db -log-file server-log.txt
+```
+**Note:** If this command fails and there's an error message about database
+locks in `server-log.txt` you need to stop the injestor, start the server, then
+re-start the injestor.
 
 ## TODOs
 
+- Verify the "running the stack" instructions are actually correct.
+- Finish instructions for building & connecting the app.
 - Put `.zcash-params` in the image.
 - Put `.zcash-mainnet` and `.zcash-testnet` fully loaded into the image.
-- Make the builds use the output of the dependency builds
-- Instructions for starting/stopping the container
+- Make the builds use the output of dependencies' builds
 - Security review (are tools/code being downloaded safely? etc)
