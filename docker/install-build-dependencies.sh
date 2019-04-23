@@ -23,12 +23,18 @@ rm go.tar.gz
 echo 'export GOROOT=/usr/local/go' >> /root/.bashrc
 echo 'export PATH=/usr/local/go/bin:$PATH' >> /root/.bashrc
 
-# Dependencies for librustzcash
+# Dependencies for librustzcash & Android rust build
 # =================================================
 
 # Rust
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 echo 'export PATH=/root/.cargo/bin:$PATH' >> /root/.bashrc
+export PATH=/root/.cargo/bin:$PATH
+
+# Fixes "can't find crate for 'core'" build errors in zcash-android-wallet-sdk
+rustup target add armv7-linux-androideabi
+rustup target add aarch64-linux-android
+rustup target add i686-linux-android
 
 # Dependencies for zcash-android-wallet-sdk
 # =================================================
@@ -50,6 +56,8 @@ rm android-sdk.zip
 mkdir "$ANDROID_HOME/licenses"
 echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
 ls -la "$ANDROID_HOME"
+
+# Accept licenses
 yes | "$ANDROID_HOME/tools/bin/sdkmanager" --licenses
 
 # Android NDK
