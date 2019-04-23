@@ -16,9 +16,6 @@ The development environment currently supports building:
 - `librustzcash` (preview branch)
 - `lightwalletd` (preview branch)
 - `zcash-android-wallet-sdk` (preview branch)
-
-It does not yet support:
-
 - `zcash-android-wallet-poc`
 
 ## Quick Start
@@ -46,6 +43,7 @@ git clone git@github.com:zcash/zcash.git
 git clone git@github.com:zcash-hackworks/lightwalletd.git
 git clone git@github.com:str4d/librustzcash.git --branch preview
 git clone git@github.com:zcash/zcash-android-wallet-sdk.git --branch preview
+git clone git@github.com:zcash/zcash-android-wallet-poc.git
 cd ..
 ```
 
@@ -117,6 +115,12 @@ go run cmd/server/main.go <...>
 cd /mount/zcash-android-wallet-sdk
 ./gradlew clean assembleZcashtestnetRelease
 ```
+
+**`zcash-android-wallet-poc`**
+
+cd /mount/zcash-android-wallet-poc
+cd zcash-android-wallet-app
+./gradlew clean assembleZcashtestnetDebug
 
 ## Running the Stack
 
