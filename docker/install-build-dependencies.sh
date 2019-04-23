@@ -64,10 +64,18 @@ yes | "$ANDROID_HOME/tools/bin/sdkmanager" --licenses
 "$ANDROID_HOME/tools/bin/sdkmanager" "ndk-bundle"
 
 # Android Emulator
-===================================================
+# ===================================================
 
 $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "platforms;android-24" "emulator"
 $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-24;default;x86"
 yes no | head -n 1 | $ANDROID_HOME/tools/bin/avdmanager create avd -n zemu -k "system-images;android-24;default;x86"
 apt-get install -y tightvncserver
 echo 'export USER=root' >> /root/.bashrc
+
+# Zcash Parameters
+# ===================================================
+git clone https://github.com/zcash/zcash.git
+cd zcash
+./zcutil/fetch-params.sh
+cd ..
+rm -rf zcash
