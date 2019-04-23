@@ -107,7 +107,7 @@ cargo build --release
 
 ```
 cd /mount/lightwalletd
-go run cmd/injest/main.go <...>
+go run cmd/ingest/main.go <...>
 go run cmd/server/main.go <...>
 ```
 
@@ -172,15 +172,15 @@ You should now be able to control the emulated device and launch the app.
 This section will help you set up:
 
 1. A `zcashd` node connected to testnet.
-2. A `lightwalletd` injestor which receives blocks from the `zcashd` node.
-3. A `lightwalletd` server which serves the blocks parsed by the injestor to
+2. A `lightwalletd` ingestor which receives blocks from the `zcashd` node.
+3. A `lightwalletd` server which serves the blocks parsed by the ingestor to
    light clients.
 
-First, start the `lightwalletd` injestor:
+First, start the `lightwalletd` ingestor:
 
 ```
 cd /mount/lightwalletd
-go run cmd/ingest/main.go -db-path database.db -log-file injestor-log.txt
+go run cmd/ingest/main.go -db-path database.db -log-file ingestor-log.txt
 ```
 
 This will listen on port 28332 for a ZMQ connection from `zcashd`. Now put the
@@ -205,7 +205,7 @@ cd /mount/zcash
 ./src/zcashd
 ```
 
-If you check the contents of `/mount/lighwalletd/injestor-log.txt`, you should
+If you check the contents of `/mount/lighwalletd/ingestor-log.txt`, you should
 see that it is receiving blocks as the `zcashd` node syncs.
 
 To serve these blocks to light clients, start the server:
@@ -215,8 +215,8 @@ cd /mount/lightwalletd
 go run cmd/server/main.go -conf-file /root/.zcash/zcash.conf -db-path database.db -log-file server-log.txt
 ```
 **Note:** If this command fails and there's an error message about database
-locks in `server-log.txt` you need to stop the injestor, start the server, then
-re-start the injestor.
+locks in `server-log.txt` you need to stop the ingestor, start the server, then
+re-start the ingestor.
 
 ## TODOs
 
