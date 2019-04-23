@@ -263,15 +263,14 @@ vncviewer localhost:5901
 ```
 
 You should now be able to control the emulated device and launch the app. To
-connect to your lightwalletd, go in the app's settings and choose Localhost2,
+connect to your `lightwalletd`, go in the app's settings and choose Localhost2,
 apply, then restart the app.
 
 ## TODOs
 
 - How to do a reindex to fix the database?
-- Verify the "running the stack" instructions are actually correct.
-- Finish instructions for building & connecting the app.
-- Put `.zcash-params` in the image.
 - Put `.zcash-mainnet` and `.zcash-testnet` fully loaded into the image.
 - Make the builds use the output of dependencies' builds
-- Security review (are tools/code being downloaded safely? etc)
+- Verify the "running the stack" instructions are actually correct.
+- Security review (are tools/code being downloaded safely? what are the
+  consequences of using a privileged docker? etc)
