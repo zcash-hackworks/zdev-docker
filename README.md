@@ -51,12 +51,14 @@ You can now launch a new container instance of `zdev` and have access to your
 clones of `zcash`, `lightwalletd`, etc. from within:
 
 ```
-docker run -it --mount type=bind,source="$(pwd)"/mount,target=/mount zdev
+docker run -it --mount type=bind,source="$(pwd)"/mount,target=/mount -p 5901:5901 --privileged zdev
 ```
 
 The `./mount` directory will be shared between the host and the container,
 accessible in the container at `/mount`. The changes you make to files inside
-`/mount` in the container will change the files in `./mount`.
+`/mount` in the container will change the files in `./mount`. The `-p 5901:5901
+--privileged` arguments are optional; they are required for running and
+connecting to the Android emulator inside the container.
 
 The previous command opened a shell inside the container. You can run build
 commands, for example:
@@ -127,6 +129,43 @@ cd /mount/zcash-android-wallet-poc
 cd zcash-android-wallet-app
 ./gradlew clean assembleZcashtestnetDebug
 ```
+
+To run the app in the Android emulator, first start a VNC server for the
+emulator to use to serve its display:
+
+```
+vncserver :1 -geometry 1080x1920 -depth 24
+```
+
+This will output a message along the lines of:
+
+```
+...
+New 'X' desktop is 3fe5a1e534df:1
+...
+```
+
+Copy the `3fe...4df` part of your output and use it to replace the `fff...fff`
+in the following command to start the emulator:
+
+```
+DISPLAY=d1368a32850c:1 $ANDROID_HOME/emulator/emulator -avd zemu -noaudio -no-boot-anim -gpu off -qemu
+```
+
+You can now install the APK in the emulator:
+
+```
+cd /mount/zcash-android-wallet-poc
+$ANDROID_HOME/platform-tools/adb install ./zcash-android-wallet-app/app/build/outputs/apk/zcashtestnet/debug/app-zcashtestnet-debug.apk
+```
+
+From your *host* system, connect to the emulator with any VNC client, e.g...
+
+```
+vncviewer localhost:5901
+```
+
+You should now be able to control the emulated device and launch the app.
 
 ## Running the Stack
 
