@@ -20,7 +20,7 @@ The development environment currently supports building:
 
 ## Quick Start
 
-**Requirements:** Docker, 30GB free disk space.
+**Requirements:** Docker, KVM on the host (for the Android emulator), 30+GB free disk space.
 
 First, checkout this repository:
 
