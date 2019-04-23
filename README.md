@@ -149,7 +149,7 @@ Copy the `3fe...4df` part of your output and use it to replace the `fff...fff`
 in the following command to start the emulator:
 
 ```
-DISPLAY=d1368a32850c:1 $ANDROID_HOME/emulator/emulator -avd zemu -noaudio -no-boot-anim -gpu off -qemu
+DISPLAY=ffffffffffff:1 $ANDROID_HOME/emulator/emulator -avd zemu -noaudio -no-boot-anim -gpu off -qemu
 ```
 
 You can now install the APK in the emulator:
