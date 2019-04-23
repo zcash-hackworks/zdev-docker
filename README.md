@@ -20,7 +20,7 @@ The development environment currently supports building:
 
 ## Quick Start
 
-**Requirements:** Docker, KVM on the host (for the Android emulator), 30+GB free disk space.
+**Requirements:** Docker, KVM and a VNC client on the host (for the Android emulator), 30+GB free disk space.
 
 First, checkout this repository:
 
@@ -66,7 +66,6 @@ commands, for example:
 ```
 cd /mount/zcash
 ./zcutil/build.sh -j$(nproc)
-./zcutil/fetch-params.sh
 ./qa/zcash/full-test-suite.py
 ```
 
@@ -130,51 +129,19 @@ cd zcash-android-wallet-app
 ./gradlew clean assembleZcashtestnetDebug
 ```
 
-To run the app in the Android emulator, first start a VNC server for the
-emulator to use to serve its display:
-
-```
-vncserver :1 -geometry 1080x1920 -depth 24
-```
-
-This will output a message along the lines of:
-
-```
-...
-New 'X' desktop is 3fe5a1e534df:1
-...
-```
-
-Copy the `3fe...4df` part of your output and use it to replace the `fff...fff`
-in the following command to start the emulator:
-
-```
-DISPLAY=ffffffffffff:1 $ANDROID_HOME/emulator/emulator -avd zemu -noaudio -no-boot-anim -gpu off -qemu
-```
-
-You can now install the APK in the emulator:
-
-```
-cd /mount/zcash-android-wallet-poc
-$ANDROID_HOME/platform-tools/adb install ./zcash-android-wallet-app/app/build/outputs/apk/zcashtestnet/debug/app-zcashtestnet-debug.apk
-```
-
-From your *host* system, connect to the emulator with any VNC client, e.g...
-
-```
-vncviewer localhost:5901
-```
-
-You should now be able to control the emulated device and launch the app.
-
 ## Running the Stack
 
-This section will help you set up:
+**This section assumes you've successfully run all of the builds in the Build
+Cheat Sheet above.** We will set up:
 
 1. A `zcashd` node connected to testnet.
 2. A `lightwalletd` ingestor which receives blocks from the `zcashd` node.
 3. A `lightwalletd` server which serves the blocks parsed by the ingestor to
    light clients.
+4. A patched build of `zcash-android-wallet-poc` (the demo Android app), running
+   in an emulator, connected to the `lightwalletd` server.
+
+### Server-Side
 
 First, start the `lightwalletd` ingestor:
 
@@ -218,8 +185,90 @@ go run cmd/server/main.go -conf-file /root/.zcash/zcash.conf -db-path database.d
 locks in `server-log.txt` you need to stop the ingestor, start the server, then
 re-start the ingestor.
 
+After a while, `zcashd` will finish downloading all of the blocks, and as it
+does so the ingestor will ingest them and the server will be able to serve them.
+Once this is done, the mobile wallet will be able to connect and sync.
+
+### Client-Side
+
+First, we'll need to patch the demo app to be able to connect to our
+`lightwalletd` server. Apply this patch:
+
+```
+diff --git a/zcash-android-wallet-app/app/src/main/java/cash/z/android/wallet/sample/SampleConfig.kt b/zcash-android-wallet-app/app/src/main/java/cash/z/android/wallet/sample/SampleConfig.kt
+index 249da5c..d45c046 100644
+--- a/zcash-android-wallet-app/app/src/main/java/cash/z/android/wallet/sample/SampleConfig.kt
++++ b/zcash-android-wallet-app/app/src/main/java/cash/z/android/wallet/sample/SampleConfig.kt
+@@ -94,6 +94,7 @@ object MyWallet : WalletConfig {
+ 
+ enum class Servers(val host: String, val displayName: String) {
+     LOCALHOST("10.0.0.191", "Localhost"),
++    LOCALHOST2("10.0.2.2", "Localhost2"),
+     //    WLAN("10.0.0.26"),
+     WLAN1("10.0.2.24", "WLAN Conference"),
+     WLAN2("192.168.1.235", "WLAN Office"),
+diff --git a/zcash-android-wallet-app/app/src/main/res/values/strings.xml b/zcash-android-wallet-app/app/src/main/res/values/strings.xml
+index a57ee92..560d204 100644
+--- a/zcash-android-wallet-app/app/src/main/res/values/strings.xml
++++ b/zcash-android-wallet-app/app/src/main/res/values/strings.xml
+@@ -108,6 +108,7 @@
+         <item>WLAN Office</item>
+         <item>WLAN Conference</item>
+         <item>Localhost</item>
++        <item>Localhost2</item>
+         <item>Custom...</item>
+     </string-array>
+ </resources>
+```
+
+Now rebuild the APK:
+
+```
+./gradlew clean assembleZcashtestnetRelease
+```
+
+To run the app in the Android emulator, first start a VNC server for the
+emulator to use to serve its display:
+
+```
+vncserver :1 -geometry 1080x1920 -depth 24
+```
+
+This will output a message along the lines of:
+
+```
+...
+New 'X' desktop is 3fe5a1e534df:1
+...
+```
+
+Copy the `3fe...4df` part of your output and use it to replace the `fff...fff`
+in the following command to start the emulator:
+
+```
+DISPLAY=ffffffffffff:1 $ANDROID_HOME/emulator/emulator -avd zemu -noaudio -no-boot-anim -gpu off -qemu
+```
+
+You can now install the APK in the emulator:
+
+```
+cd /mount/zcash-android-wallet-poc
+$ANDROID_HOME/platform-tools/adb install ./zcash-android-wallet-app/app/build/outputs/apk/zcashtestnet/debug/app-zcashtestnet-debug.apk
+```
+
+From your *host* system, connect to the emulator with any VNC client, e.g...
+
+```
+vncviewer localhost:5901
+```
+
+You should now be able to control the emulated device and launch the app. To
+connect to your lightwalletd, go in the app's settings and choose Localhost2,
+apply, then restart the app.
+
 ## TODOs
 
+- How to do a reindex to fix the database?
 - Verify the "running the stack" instructions are actually correct.
 - Finish instructions for building & connecting the app.
 - Put `.zcash-params` in the image.

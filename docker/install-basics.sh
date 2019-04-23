@@ -6,4 +6,4 @@ cd /root/docker
 sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list
 apt-get update
 apt-get -y upgrade
-apt-get install -y software-properties-common curl git htop man unzip vim wget ack
+apt-get install -y software-properties-common curl git htop man unzip vim wget ack net-tools
