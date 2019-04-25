@@ -175,6 +175,10 @@ cd /mount/zcash
 If you check the contents of `/mount/lighwalletd/ingestor-log.txt`, you should
 see that it is receiving blocks as the `zcashd` node syncs.
 
+If you get an error message like `block -1: UNIQUE constraint failed` in the log
+file, stop the ingestor, delete database.db, and then re-start it (the error
+occurs when the ingestor is started before zcashd).
+
 To serve these blocks to light clients, start the server:
 
 ```
@@ -264,10 +268,11 @@ vncviewer localhost:5901
 
 You should now be able to control the emulated device and launch the app. To
 connect to your `lightwalletd`, go in the app's settings and choose Localhost2,
-apply, then restart the app.
+click the checkmark, then re-open the app.
 
 ## TODOs
 
+- Fix the VNC resolution
 - How to do a reindex to fix the database?
 - Put `.zcash-mainnet` and `.zcash-testnet` fully loaded into the image.
 - Make the builds use the output of dependencies' builds
