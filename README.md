@@ -229,7 +229,7 @@ index a57ee92..560d204 100644
 Now rebuild the APK:
 
 ```
-./gradlew clean assembleZcashtestnetRelease
+./gradlew clean assembleZcashtestnetDebug
 ```
 
 To run the app in the Android emulator, first start a VNC server for the
