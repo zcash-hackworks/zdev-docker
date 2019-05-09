@@ -122,6 +122,7 @@ cd /mount/zcash-android-wallet-sdk
 First, generate a `google-services.json` file from [Google
 Firebase](https://firebase.google.com/) and put it in
 `zcash-android-wallet-poc/zcash-android-wallet-app/app/google-services.json`.
+The `package_name` inside the file needs to be `cash.z.android.wallet.testnet`.
 
 ```
 cd /mount/zcash-android-wallet-poc
