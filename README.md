@@ -41,7 +41,7 @@ Now, clone all of the projects you want to work on into the `mount/` directory:
 cd mount
 git clone git@github.com:zcash/zcash.git
 git clone git@github.com:zcash-hackworks/lightwalletd.git
-git clone git@github.com:str4d/librustzcash.git
+git clone git@github.com:zcash/librustzcash.git
 git clone git@github.com:zcash/zcash-android-wallet-sdk.git --branch preview
 git clone git@github.com:zcash/zcash-android-wallet-poc.git
 cd ..
