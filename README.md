@@ -247,7 +247,7 @@ To run the app in the Android emulator, first start a VNC server for the
 emulator to use to serve its display:
 
 ```
-vncserver :1 -geometry 1080x1920 -depth 24
+vncserver :1 -geometry 600x800 -depth 24
 ```
 
 This will output a message along the lines of:
