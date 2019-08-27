@@ -151,6 +151,10 @@ Cheat Sheet above.** We will set up:
 
 ### Server-Side
 
+**Note:** These instructions will need to be updated [once lightwalletd no
+longer uses ZMQ to interact with
+zcashd](https://github.com/zcash-hackworks/lightwalletd/pull/43)
+
 First, start the `lightwalletd` ingestor:
 
 ```
