@@ -20,7 +20,12 @@ The development environment currently supports building:
 
 ## Quick Start
 
-**Requirements:** Docker, KVM and a VNC client on the host (for the Android emulator), 30+GB free disk space.
+**Requirements:** Docker, KVM and a VNC client on the host (for the Android
+emulator), 30+GB free disk space. You'll need enough memory to run zcashd and
+the emulator, I suggest a minimum of 8GB.
+
+**OSX Support:** The emulator will be insanely slow on OSX (to the point where
+it's not even usable) because there, it has to emulate the device's CPU.
 
 First, checkout this repository:
 
