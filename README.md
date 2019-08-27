@@ -106,8 +106,8 @@ cargo build --release
 
 ```
 cd /mount/lightwalletd
-go run cmd/ingest/main.go <...>
-go run cmd/server/main.go <...>
+go build -o server cmd/server/main.go
+go build -o ingest cmd/ingest/main.go
 ```
 
 **`zcash-android-wallet-sdk`**
@@ -115,6 +115,13 @@ go run cmd/server/main.go <...>
 ```
 cd /mount/zcash-android-wallet-sdk
 ./gradlew clean assembleZcashtestnetRelease
+```
+
+You can also build the `memo` sample app:
+
+```
+cd samples/memo
+./gradlew :sdk:assemblezcashtestnetdebug :app:assembledebug
 ```
 
 **`zcash-android-wallet-poc`**
