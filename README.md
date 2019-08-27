@@ -13,14 +13,19 @@ container.
 The development environment currently supports building:
 
 - `zcashd`
-- `librustzcash` (preview branch)
-- `lightwalletd` (preview branch)
+- `librustzcash`
+- `lightwalletd`
 - `zcash-android-wallet-sdk` (preview branch)
 - `zcash-android-wallet-poc`
 
 ## Quick Start
 
-**Requirements:** Docker, KVM and a VNC client on the host (for the Android emulator), 30+GB free disk space.
+**Requirements:** Docker, KVM and a VNC client on the host (for the Android
+emulator), 30+GB free disk space. You'll need enough memory to run zcashd and
+the emulator, I suggest a minimum of 8GB.
+
+**OSX Support:** The emulator will be insanely slow on OSX (to the point where
+it's not even usable) because there, it has to emulate the device's CPU.
 
 First, checkout this repository:
 
@@ -41,7 +46,7 @@ Now, clone all of the projects you want to work on into the `mount/` directory:
 cd mount
 git clone git@github.com:zcash/zcash.git
 git clone git@github.com:zcash-hackworks/lightwalletd.git
-git clone git@github.com:str4d/librustzcash.git --branch preview
+git clone git@github.com:zcash/librustzcash.git
 git clone git@github.com:zcash/zcash-android-wallet-sdk.git --branch preview
 git clone git@github.com:zcash/zcash-android-wallet-poc.git
 cd ..
@@ -106,8 +111,8 @@ cargo build --release
 
 ```
 cd /mount/lightwalletd
-go run cmd/ingest/main.go <...>
-go run cmd/server/main.go <...>
+go build -o server cmd/server/main.go
+go build -o ingest cmd/ingest/main.go
 ```
 
 **`zcash-android-wallet-sdk`**
@@ -115,6 +120,13 @@ go run cmd/server/main.go <...>
 ```
 cd /mount/zcash-android-wallet-sdk
 ./gradlew clean assembleZcashtestnetRelease
+```
+
+You can also build the `memo` sample app:
+
+```
+cd samples/memo
+./gradlew :sdk:assemblezcashtestnetdebug :app:assembledebug
 ```
 
 **`zcash-android-wallet-poc`**
@@ -143,6 +155,10 @@ Cheat Sheet above.** We will set up:
    in an emulator, connected to the `lightwalletd` server.
 
 ### Server-Side
+
+**Note:** These instructions will need to be updated [once lightwalletd no
+longer uses ZMQ to interact with
+zcashd](https://github.com/zcash-hackworks/lightwalletd/pull/43)
 
 First, start the `lightwalletd` ingestor:
 
@@ -236,7 +252,7 @@ To run the app in the Android emulator, first start a VNC server for the
 emulator to use to serve its display:
 
 ```
-vncserver :1 -geometry 1080x1920 -depth 24
+vncserver :1 -geometry 600x800 -depth 24
 ```
 
 This will output a message along the lines of:
