@@ -287,6 +287,20 @@ You should now be able to control the emulated device and launch the app. To
 connect to your `lightwalletd`, go in the app's settings and choose Localhost2,
 click the checkmark, then re-open the app.
 
+To update the app in the emulator after you rebuild it with changes, simply
+uninstall it as follows and then reinstall it using the same command above.
+Replace `whateveritis`.
+
+```
+$ANDROID_HOME/platform-tools/adb uninstall cash.z.whateveritis
+```
+
+To view the `adb` logs:
+
+```
+$ANDROID_HOME/platform-tools/adb logcat
+```
+
 ## TODOs
 
 - Fix the VNC resolution
