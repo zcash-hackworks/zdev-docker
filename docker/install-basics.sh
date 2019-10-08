@@ -8,7 +8,7 @@ apt-get update
 apt-get -y upgrade
 apt-get install -y software-properties-common curl git htop man unzip vim wget ack net-tools
 # Debugging tools
-apt-get install -y gdb strace tcpdump linux-perf xxd bsdmainutils
+apt-get install -y gdb strace tcpdump linux-tools-common linux-tools-generic xxd bsdmainutils
 
 # Shell customizations.
 # Enable core dumps.
